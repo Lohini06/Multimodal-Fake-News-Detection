@@ -47,6 +47,9 @@ Evaluated on 200 held-out test samples from a balanced real-world dataset.
 
 > Trained on 2000 balanced samples · Early stopping · Test set: 200 samples
 
+![Training Curves](assets/training_curves.png)
+![Confusion Matrix](assets/confusion_matrix.png)
+
 ---
 
 ##  Project Structure
