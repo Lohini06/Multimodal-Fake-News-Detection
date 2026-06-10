@@ -1,0 +1,25 @@
+# Virtual environment
+venv/
+
+# Model weights and large files
+outputs/checkpoints/
+*.pt
+*.pth
+*.safetensors
+*.bin
+
+# Cache
+__pycache__/
+*.pyc
+*.pyo
+.cache/
+
+# Data
+data/raw/
+*.csv
+
+# Environment
+.env
+
+# Huggingface cache
+~/.cache/huggingface/
