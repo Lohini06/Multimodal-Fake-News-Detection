@@ -79,17 +79,17 @@ class Trainer:
             "optimizer_state_dict": self.optimizer.state_dict(),
             "val_acc": val_acc,
         }, path)
-        print(f"💾 Checkpoint saved (val_acc: {val_acc:.4f})")
+        print("Checkpoint saved (val_acc: " + str(round(val_acc, 4)) + ")")
 
     def fit(self, train_loader, val_loader):
         epochs = self.config["training"]["epochs"]
         patience = self.config["training"]["early_stopping_patience"]
 
-        print(f"\n🚀 Starting training for {epochs} epochs...\n")
+        print("Starting training for " + str(epochs) + " epochs...")
 
         for epoch in range(1, epochs + 1):
             train_loss, train_acc = self.train_epoch(train_loader)
-            val_loss, val_acc     = self.val_epoch(val_loader)
+            val_loss, val_acc = self.val_epoch(val_loader)
             self.scheduler.step()
 
             self.history["train_loss"].append(train_loss)
@@ -97,11 +97,12 @@ class Trainer:
             self.history["train_acc"].append(train_acc)
             self.history["val_acc"].append(val_acc)
 
-            print(f"Epoch {epoch:02d}/{epochs} | "
-                  f"Train Loss: {train_loss:.4f} Acc: {train_acc:.4f} | "
-                  f"Val Loss: {val_loss:.4f} Acc: {val_acc:.4f}")
+            print("Epoch " + str(epoch) + "/" + str(epochs) +
+                  " | Train Loss: " + str(round(train_loss, 4)) +
+                  " Acc: " + str(round(train_acc, 4)) +
+                  " | Val Loss: " + str(round(val_loss, 4)) +
+                  " Acc: " + str(round(val_acc, 4)))
 
-            # Save best model
             if val_acc > self.best_val_acc:
                 self.best_val_acc = val_acc
                 self.save_checkpoint(epoch, val_acc)
@@ -109,9 +110,11 @@ class Trainer:
             else:
                 self.patience_counter += 1
                 if self.patience_counter >= patience:
-                    print(f"\n⏹ Early stopping triggered at epoch {epoch}")
+                    print("Early stopping at epoch " + str(epoch))
                     break
 
-        # Save training history
-        history_path = os.path.join(
-            self.config["outputs"]["results_dir"], "history.json"
+        history_path = os.path.join(self.config["outputs"]["results_dir"], "history.json")
+        with open(history_path, "w") as f:
+            json.dump(self.history, f, indent=2)
+        print("Training complete. Best val acc: " + str(round(self.best_val_acc, 4)))
+        return self.history
