@@ -1,0 +1,38 @@
+# Model
+model:
+  clip_model: "ViT-B-32"
+  clip_pretrained: "openai"
+  embedding_dim: 512
+  hidden_dim: 256
+  dropout: 0.3
+  num_classes: 2
+
+# Training
+training:
+  epochs: 20
+  batch_size: 32
+  learning_rate: 0.0001
+  weight_decay: 0.01
+  early_stopping_patience: 5
+  val_split: 0.2
+  test_split: 0.1
+  seed: 42
+
+# Data
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  max_text_length: 77
+  image_size: 224
+
+# Outputs
+outputs:
+  checkpoint_dir: "outputs/checkpoints"
+  results_dir: "outputs/results"
+  best_model_name: "best_model.pt"
+
+# Logging
+logging:
+  use_wandb: false
+  project_name: "multimodal-fake-news"
+  experiment_name: "clip-fusion-v1"
